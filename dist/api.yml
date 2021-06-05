@@ -10,6 +10,7 @@ tags:
   - name: Players
   - name: Teams
   - name: Games
+  - name: Search
 paths:
   /Register:
     post:
@@ -76,15 +77,13 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/League"
-        "400":
-          description: wrong input parameters
+        "404":
+          description: league not found
   /users/favoritePlayers:
     get:
       tags:
         - Users
-        - Players
       summary: Return the favorite players that were saved by user
-      parameters:
       responses:
         "200":
           description: data about the user's favorites players returned
@@ -100,7 +99,6 @@ paths:
       summary: save player in the favorites list of a user
       tags:
         - Users
-        - Players
       requestBody:
         content:
           application/json:
@@ -114,6 +112,41 @@ paths:
       responses:
         "201":
           description: The player successfully saved as favorite
+        "401":
+          description: user is not authorized
+  /users/favoriteGames:
+    get:
+      tags:
+        - Users
+      summary: Return the favorite games that were saved by user
+      responses:
+        "200":
+          description: data about the user's favorites games returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/newGamesPreview"
+        "401":
+          description: user is not authorized
+    post:
+      summary: save game in the favorites list of a user
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gameId:
+                  type: string
+                  description: game's id which the user saved
+                  example: 1
+      responses:
+        "201":
+          description: The game successfully saved as favorite
         "401":
           description: user is not authorized
   /teams/teamFullDetails/{teamId}:
@@ -138,6 +171,259 @@ paths:
                 $ref: "#/components/schemas/Team"
         "404":
           description: teamId is not exists
+  /players/playerPage/{playerId}:
+    get:
+      tags:
+        - Players
+      summary: Return the player page
+      parameters:
+        - in: path
+          name: playerId
+          description: player's id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: data about the player
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/playerPage"
+        "404":
+          description: Player id is not exists
+  /games/getAllNewGames:
+    get:
+      tags:
+        - Games
+      summary: Return the all games in league
+      responses:
+        "200":
+          description: data about all games in the league
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/newGamesPreview"
+        "401":
+          description: user is not authorized
+  /games/getAllOldGames:
+    get:
+      tags:
+        - Games
+      summary: Return the all games in league
+      responses:
+        "200":
+          description: data about all games in the league
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/oldGamesPreview"
+        "401":
+          description: user is not authorized
+  /search/searchByName/{name}:
+    get:
+      tags:
+        - Search
+      summary: Return teams and players the user search
+      parameters:
+        - in: path
+          name: name
+          description: player or team name
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: all the players and teams 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/searchByName"
+        "204":
+          description: Results not found
+  /search/filterWithPosition/{name}/{position}:
+    get:
+      tags:
+        - Search
+      summary: Return players the user filter
+      parameters:
+        - in: path
+          name: name
+          description: player name
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: position
+          description: player position
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: all the players 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/filter"
+        "204":
+          description: Results not found
+  /search/filterWithTeamName/{name}/{team_name}:
+    get:
+      tags:
+        - Search
+      summary: Return players the user filter
+      parameters:
+        - in: path
+          name: name
+          description: player name
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: team_name
+          description: player team's name
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: all the players 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/filter"
+        "204":
+          description: Results not found
+  /search/filterWithPositionAndTeamName/{name}/{position}/{team_name}:
+    get:
+      tags:
+        - Search
+      summary: Return players the user filter
+      parameters:
+        - in: path
+          name: name
+          description: player name
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: position
+          description: player position
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: team_name
+          description: player team's name
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: all the players 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/filter"
+        "204":
+          description: Results not found
+  /users/favoriteTeams:
+    get:
+      tags:
+        - Users
+      summary: Return the favorite teams that were saved by user
+      responses:
+        "200":
+          description: data about the user's favorites teams returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TeamPreview"
+        "401":
+          description: user is not authorized
+    post:
+      summary: save tean in the favorites list of a user
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                teamId:
+                  type: string
+                  description: team's id which the user saved
+                  example: 85
+      responses:
+        "201":
+          description: The player successfully saved as favorite
+        "401":
+          description: user is not authorized
+  /games/Referee:
+    get:
+      summary: get all referee
+      description: useful for add games
+      tags:
+        - Games
+      responses:
+        "200":
+          description: data about all the referee
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Referee"
+        "404":
+          description: No referee
+  /games/getAllTeamsName:
+    get:
+      summary: get all teams name
+      description: useful for add games
+      tags:
+        - Games
+      responses:
+        "200":
+          description: data about all the teams name
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamPreview"
+        "404":
+          description: No teams
+  /games/addGame:
+    post:
+      tags:
+        - Games
+      summary: Add new game
+      description: A new game is added to the server
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newGamesPreview"
+      responses:
+        "201":
+          description: A new game has been added
+        "400":
+          description: wrong input parameters
 components:
   schemas:
     User:
@@ -175,7 +461,7 @@ components:
           type: string
           description: user's email
           example: ladygaga@gmail.com
-        image-url:
+        image:
           pattern: URL
           type: string
           description: URL for the user's image
@@ -212,6 +498,11 @@ components:
           type: string
           description: current stage name
           example: Championship Round
+        next_game:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/newGamesPreview"
     PlayerPreview:
       type: object
       properties:
@@ -232,15 +523,195 @@ components:
           type: string
           description: player's team name
           example: København
+    newGamesPreview:
+      type: object
+      properties:
+        game_date:
+          type: string
+          description:  Game date
+          example: '2021-10-09'
+        game_time:
+          type: string
+          description:  Game time
+          example: '12:00'
+        hometeam:
+          type: string
+          description:  Game home team
+          example: 'Ranger'
+        awayteam:
+          type: string
+          description:  Game away team
+          example: 'Horsens'
+        feild:
+          type: string
+          description:  Game feild
+          example: 'Ceres Park'
+        referee:
+          type: string
+          description:  Game referee
+          example: 'Mike Dean'
+    oldGamesPreview:
+      type: object
+      properties:
+        game_date:
+          type: string
+          description:  Game date
+          example: '2021-10-09'
+        game_time:
+          type: string
+          description:  Game time
+          example: '12:00'
+        hometeam:
+          type: string
+          description:  Game home team
+          example: 'Ranger'
+        awayteam:
+          type: string
+          description:  Game away team
+          example: 'Horsens'
+        feild:
+          type: string
+          description:  Game feild
+          example: 'Ceres Park'
+        referee:
+          type: string
+          description:  Game referee
+          example: 'Mike Dean'
+        score:
+          type: string
+          description: game score
+          example: "2:3"
+        logevent:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/logEventPreview"
     Team:
       type: object
       properties:
         name:
           type: string
           description: team name
-          example: København
+          example: 'Hibernian'
+        twitter:
+          type: string
+          description: team twitter name
+          example: "@hibernianFC"
+        founded:
+          type: int
+          description: team year of establishment
+          example: 1876
+        logo_path:
+          type: URL
+          description: team logo
+          example: https://cdn.sportmonks.com/images//soccer/teams/2/66.png
         players:
           type: array
           items:
             type: object
             $ref: "#/components/schemas/PlayerPreview"
+        new_games:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/newGamesPreview"
+        old_game:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/oldGamesPreview"
+    playerPage:
+      type: object
+      properties:
+        name:
+          type: string
+          description: player's name
+          example: Sten Michael Grytebust
+        image:
+          type: string
+          description: player's image
+          format: URL
+          example: https://cdn.sportmonks.com/images/soccer/players/11/84587.png
+        position:
+          type: integer
+          description: player's position in team
+          example: 1
+        team_name:
+          type: string
+          description: player's team name
+          example: København
+        common_name:
+          type: string
+          description: player's common name
+          example: Sten
+        nationality:
+          type: string
+          description: player's nationality
+          example: France
+        birthdate:
+          type: string
+          description: player's birth date
+          example: '12/05/1983'
+        birthcountry:
+          type: string
+          description: player's birth country
+          example: French
+        height:
+          type: string
+          description: player's Height
+          example: '176 cm'
+        weight:
+          type: string
+          description: player's weight
+          example: '80 kg'
+    logEventPreview:
+      type: object
+      properties:
+        minute:
+          type: int
+          description:  Game home team
+          example: 40
+        event:
+          type: string
+          description:  Event description
+          example: 'Yellow card Messi'
+    searchByName:
+      type: object
+      properties:
+        teams:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/TeamPreview"      
+        players:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/PlayerPreview"
+    TeamPreview:
+      type: object
+      properties:
+        name:
+          type: string
+          description: team name
+          example: 'Hibernian'
+        logo_path:
+          type: URL
+          description: team logo
+          example: https://cdn.sportmonks.com/images//soccer/teams/2/66.png
+    Referee:
+      type: object
+      properties:
+        name:
+          type: string
+          description: referee name
+          example: 'Mike Dean'
+    filter:
+      type: object
+      properties:   
+        players:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/PlayerPreview"
+        
