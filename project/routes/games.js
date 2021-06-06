@@ -6,8 +6,12 @@ const DButils = require("./utils/DButils");
 const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 
+/**
+ * This path returns all the games that didn't happend yet
+ */
 router.get("/getAllNewGames", async (req, res, next) => {
   try {
+    //get details about games that didn't happend yet
     const games_details = await games_utils.getNewGames();
     res.send(games_details);
   } catch (error) {
@@ -15,8 +19,12 @@ router.get("/getAllNewGames", async (req, res, next) => {
   }
 });
 
+/**
+ * This path returns all the game that already happend
+ */
 router.get("/getAllOldGames", async (req, res, next) => {
     try {
+      //get details about games that already happend
       const games_details = await games_utils.getOldGames();
       res.send(games_details);
     } catch (error) {
@@ -24,17 +32,18 @@ router.get("/getAllOldGames", async (req, res, next) => {
     }
   });
 
-router.get("/getAllTeamsName", async (req, res, next) => {
-  try {
-    const teams = await team_utils.getAllTeams();
-    res.send(teams);
-  } catch (error) {
-    next(error);
-  }
-});
+// router.get("/getAllTeamsName", async (req, res, next) => {
+//   try {
+//     const teams = await team_utils.getAllTeams();
+//     res.send(teams);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 router.get("/Referee", async (req, res, next) => {
   try {
+    //return all the referee
     const Referees = await DButils.execQuery(
       "SELECT name FROM dbo.Referees"
     );
@@ -44,32 +53,46 @@ router.get("/Referee", async (req, res, next) => {
   }
 });
 
+/**
+ * This path gets body with details for game and save this gmae in the system
+ */
 router.post("/addGame", async (req, res, next) => {
   try {
+    //add new game to the DB
     const user_id = req.session.user_id;
-    if (user_id!=2)
+    if (user_id!=2) //check if the user is the representative
       throw { status: 401, message: "Only Representative of the Association can add games" };
+
+    //check the referee
     const referee = await DButils.execQuery(
       "SELECT name FROM dbo.Referees"
     );
     if (!(referee.find((x) => x.name.toLowerCase()=== req.body.referee.toLowerCase())))
       throw { status: 409, message: "Referee is not found" };
+
+    //check the date
     const dateElem=String(req.body.game_date).split('-');
-    const timeElem=String(req.body.game_time).split(':');
     if (dateElem.length!=3 || dateElem[0].length!=4 || dateElem[1].length!=2 || dateElem[2].length!=2 || isNaN(dateElem[0]) || isNaN(dateElem[1]) || isNaN(dateElem[2]) || parseInt(dateElem[0],10)<2021 ||parseInt(dateElem[1],10)<0 ||parseInt(dateElem[1],10)>12|| parseInt(dateElem[2],10)<0 || parseInt(dateElem[2],10)>31)
       throw {status:409, message:"wrong format for date"}
     if( dateElem[0]>2022)
     throw {status:409, message:"Date is not in the season"}
-    if (timeElem.length!=2 || timeElem[0].length!=2 || timeElem[1].length!=2  || isNaN(timeElem[0]) || isNaN(timeElem[1]) || parseInt(timeElem[0],10)<0 ||parseInt(timeElem[0],10)>24 ||parseInt(timeElem[1],10)<0|| parseInt(timeElem[1],10)>59)
-      throw {status:409, message:"wrong format for time"}
     let today = new Date();
     if (dateElem[0]<today.getFullYear() || (dateElem[0]==today.getFullYear() && (dateElem[1]<today.getMonth() || (dateElem[1]==today.getMonth() && dateElem[2]<today.getDay()))))
       throw {status:409, message:"the date is passed"}
+
+    //check the time
+    const timeElem=String(req.body.game_time).split(':');
+    if (timeElem.length!=2 || timeElem[0].length!=2 || timeElem[1].length!=2  || isNaN(timeElem[0]) || isNaN(timeElem[1]) || parseInt(timeElem[0],10)<0 ||parseInt(timeElem[0],10)>24 ||parseInt(timeElem[1],10)<0|| parseInt(timeElem[1],10)>59)
+      throw {status:409, message:"wrong format for time"}
+    
+    //check the feild
     const feild = await DButils.execQuery(
       "SELECT name FROM dbo.Feilds"
     );
     if (!(feild.find((x) => x.name.toLowerCase() === req.body.feild.toLowerCase())))
       throw { status: 409, message: "Feild is not found" };
+
+    //check the teams
     const hometeam = req.body.hometeam;
     const hometeams = await axios.get(`${api_domain}/teams/search/${hometeam}`, {
       params: {
@@ -92,6 +115,7 @@ router.post("/addGame", async (req, res, next) => {
       throw { status: 409, message: "There is no such team" };
     if (awayteams.data.data.leauge!=null && awayteams.data.data.leauge.data.id!=271)
       throw { status: 409, message: "Team is not in the league" };
+
     // check if valid game
     const allGames = await DButils.execQuery(
       `SELECT * FROM dbo.Games WHERE gamedate='${req.body.game_date}' AND gametime='${req.body.game_time}'`
@@ -100,6 +124,7 @@ router.post("/addGame", async (req, res, next) => {
       throw { status: 409, message: "The feild is occupied at this time" };
     if (allGames.find((x) => x.hometeam === req.body.hometeam || x.awayteam === req.body.awayteam))
       throw { status: 409, message: "The team is occupied at this time" };
+      
     // add the new game
     await DButils.execQuery(
       `INSERT INTO dbo.Games (gamedate, gametime, hometeam, awayteam, feild, referee) VALUES ('${req.body.game_date}','${req.body.game_time}','${req.body.hometeam}','${req.body.awayteam}', '${req.body.feild}','${req.body.referee}')`

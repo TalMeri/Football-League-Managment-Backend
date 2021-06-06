@@ -5,6 +5,7 @@ const games_utils = require("./games_utils");
 const LEAGUE_ID = 271;
 
 async function getLeagueDetails() {
+  //get from the API the info about league 271
   const league = await axios.get(
     `https://soccer.sportmonks.com/api/v2.0/leagues/${LEAGUE_ID}`,
     {
@@ -14,7 +15,8 @@ async function getLeagueDetails() {
       },
     }
   );
-  const time = games_utils.getDateAndTime();
+  const time = games_utils.getDateAndTime(); //today time
+  //get from the db the next game for the league
   const next_game = await DButils.execQuery(
     `SELECT * FROM dbo.Games WHERE (CAST(gamedate AS Date)>CAST(GETDATE() AS Date) OR (CAST(gamedate AS Date)=CAST(GETDATE() AS Date) AND CONVERT(TIME, gametime)>=CONVERT(TIME,'${time}'))) ORDER BY gamedate,gametime`
   );
@@ -31,7 +33,7 @@ async function getLeagueDetails() {
       league_name: league.data.data.name,
       current_season_name: league.data.data.season.data.name,
       current_stage_name: stage.data.data.name,
-      next_game:{
+      next_game:{ //use the first game that come from the search
         game_date: next_game[0].gamedate,
         game_time: next_game[0].gametime,
         hometeam: next_game[0].hometeam,
@@ -41,8 +43,8 @@ async function getLeagueDetails() {
       }
     };
   }
-  else{
-    const stage = await axios.get(
+  else{ //if the stage is over
+    const stage = await axios.get(   
       `https://soccer.sportmonks.com/api/v2.0/stages/season/18334`,
       {
         params: {
@@ -54,7 +56,7 @@ async function getLeagueDetails() {
       league_name: league.data.data.name,
       current_season_name: league.data.data.season.data.name,
       current_stage_name: stage.data.data[0].name,
-      next_game:{
+      next_game:{ //use the first game that come from the search
         game_date: next_game[0].gamedate,
         game_time: next_game[0].gametime,
         hometeam: next_game[0].hometeam,

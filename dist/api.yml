@@ -108,7 +108,7 @@ paths:
                 playerId:
                   type: string
                   description: player's id which the user saved
-                  example: 85
+                  example: 26722
       responses:
         "201":
           description: The player successfully saved as favorite
@@ -143,7 +143,7 @@ paths:
                 gameId:
                   type: string
                   description: game's id which the user saved
-                  example: 1
+                  example: 4
       responses:
         "201":
           description: The game successfully saved as favorite
@@ -434,15 +434,15 @@ components:
           minLength: 3
           type: string
           description: username conatins between 3 to 8 letters only
-          example: ladygaga
+          example: Dani
         firstname:
           type: string
           description: user's first name
-          example: Stefani
+          example: Dan
         lastname:
           type: string
           description: user's last name
-          example: Germanotta
+          example: Choen
         country:
           type: string
           description: user's country
@@ -455,12 +455,12 @@ components:
             password conatins between 5 to 10 chars, at least one of them
             is a number and a special char
           format: password
-          example: lady@56
+          example: DaniC@1
         email:
           pattern: email
           type: string
           description: user's email
-          example: ladygaga@gmail.com
+          example: dan.choen@gmail.com
         image:
           pattern: URL
           type: string
@@ -475,14 +475,14 @@ components:
           minLength: 3
           maxLength: 8
           description: username conatins letters only
-          example: naorbe
+          example: Dani
         password:
           type: string
           minLength: 5
           maxLength: 10
           format: password
           description: password conatins at least one number and one special char
-          example: naor@55
+          example: DaniC@1
     League:
       type: object
       properties:
@@ -529,23 +529,23 @@ components:
         game_date:
           type: string
           description:  Game date
-          example: '2021-10-09'
+          example: '2021-08-20'
         game_time:
           type: string
           description:  Game time
-          example: '12:00'
+          example: '14:00'
         hometeam:
           type: string
           description:  Game home team
-          example: 'Ranger'
+          example: 'Silkeborg'
         awayteam:
           type: string
           description:  Game away team
-          example: 'Horsens'
+          example: 'Randers'
         feild:
           type: string
           description:  Game feild
-          example: 'Ceres Park'
+          example: 'JYSK park'
         referee:
           type: string
           description:  Game referee
@@ -556,23 +556,23 @@ components:
         game_date:
           type: string
           description:  Game date
-          example: '2021-10-09'
+          example: '2021-05-20'
         game_time:
           type: string
           description:  Game time
-          example: '12:00'
+          example: '16:00'
         hometeam:
           type: string
           description:  Game home team
-          example: 'Ranger'
+          example: 'Silkeborg'
         awayteam:
           type: string
           description:  Game away team
-          example: 'Horsens'
+          example: 'Randers'
         feild:
           type: string
           description:  Game feild
-          example: 'Ceres Park'
+          example: 'JYSK park'
         referee:
           type: string
           description:  Game referee
@@ -580,7 +580,7 @@ components:
         score:
           type: string
           description: game score
-          example: "2:3"
+          example: "0:1"
         logevent:
           type: array
           items:
@@ -670,11 +670,11 @@ components:
         minute:
           type: int
           description:  Game home team
-          example: 40
+          example: 30
         event:
           type: string
           description:  Event description
-          example: 'Yellow card Messi'
+          example: 'red card Silkeborg'
     searchByName:
       type: object
       properties:
