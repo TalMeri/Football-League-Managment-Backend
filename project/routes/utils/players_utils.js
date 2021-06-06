@@ -86,13 +86,13 @@ async function getPlayersDetailsByName(name) {
   const players = await axios.get(`${api_domain}/players/search/${name}`, {
     params: {
       api_token: process.env.api_token,
-      include: ("team.league", "position")
+      include: "team.league, position"
     },
   })
   let players_league=[];//will contain only player from the league
   players.data.data.map((player)=>{
     //check that the player is in the league
-    if(player.data.data.team!=null && player.data.data.team.data.league.data==271)
+    if(player.team!=null && player.team.data.league!=null && player.team.data.league.data.id==271 && player.fullname.toLowerCase().includes(name.toLowerCase()))
       players_league.push(player)
   });
   return players_league;
@@ -120,9 +120,9 @@ async function getPlayersByNameAndPosition(name, position){
   //get players that match the name and from the league
   const players_match_name = await getPlayersDetailsByName(name);
   let players = []; //will contain only players that match the position 
-  players_match_name.data.data.map((player) =>{
+  players_match_name.map((player) =>{
     //check that the position match 
-    if (player.position!=null && player.position.name.toLowerCase()==position.toLowerCase()){
+    if (player.position!=null && player.position.data.name.toLowerCase()==position.toLowerCase()){
       players.push(player);
     }
   });
@@ -145,7 +145,7 @@ async function getPlayersByNameAndTeamName(name, team_name){
    //get players that match the name and from the league
   const players_match_name = await getPlayersDetailsByName(name);
   let players = []; //will contain only player that match the team name
-  players_match_name.data.data.map((player) =>{
+  players_match_name.map((player) =>{
     //check that the team name match
     if (player.team!=null && player.team.data.name.toLowerCase()==team_name.toLowerCase()){
       players.push(player);
@@ -170,7 +170,7 @@ async function getPlayersByNameAndPositionAndTeamName(name, position,team_name){
    //get players that match the name and from the league
   const players_match_name = await getPlayersDetailsByName(name);
   let players = []; //will conatin only players that match the position and the team name
-  players_match_name.data.data.map((player) =>{
+  players_match_name.map((player) =>{
     //check that the team name and position match
     if (player.team!=null && player.position!=null && player.position.name.toLowerCase()==position.toLowerCase() && player.team.data.name.toLowerCase()==team_name.toLowerCase()){
       players.push(player);

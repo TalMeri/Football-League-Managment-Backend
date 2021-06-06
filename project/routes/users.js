@@ -33,9 +33,9 @@ router.post("/favoritePlayers", async (req, res, next) => {
     const player_id = req.body.playerId;
     //get list of the user favorite players
     const players = await DButils.execQuery(
-      "SELECT player_id FROM dbo.FavoritePlayers"
+      `SELECT player_id FROM dbo.FavoritePlayers WHERE user_id='${user_id}`
     );
-    if (players.find((x) => x.player_id=== player_id)) //check if the player is already marked as favorite
+    if (players.find((x) => x.player_id=== player_id )) //check if the player is already marked as favorite
       throw { status: 409, message: "Player already favorite" };
     await users_utils.markPlayerAsFavorite(user_id, player_id); //mark the player
     res.status(201).send("The player successfully saved as favorite");
@@ -69,9 +69,9 @@ router.post("/favoriteGames", async (req, res, next) => {
     const game_id = req.body.gameId;
     //get list of the user favorite gamess
     const games = await DButils.execQuery(
-      "SELECT game_id FROM dbo.FavoriteGames"
+      `SELECT game_id FROM dbo.FavoriteGames WHERE user_id='${user_id}'`
     );
-    if (games.find((x) => x.game_id=== game_id)) //check if the game is already marked as favorite
+    if (games.find((x) => x.game_id=== game_id )) //check if the game is already marked as favorite
       throw { status: 409, message: "Game already favorite" };
     const game_with_id = await DButils.execQuery(
       `SELECT * FROM dbo.games WHERE game_id='${game_id}'`
@@ -117,7 +117,7 @@ router.get("/favoriteGames", async (req, res, next) => {
     const team_id = req.body.teamId;
     //get list of the user favorite teams
     const teams = await DButils.execQuery(
-      "SELECT team_id FROM dbo.FavoriteTeams"
+      `SELECT team_id FROM dbo.FavoriteTeams WHERE user_id='${user_id}'`
     );
     if (teams.find((x) => x.team_id=== team_id)) //check if the team is already marked as favorite
       throw { status: 409, message: "Team already favorite" };

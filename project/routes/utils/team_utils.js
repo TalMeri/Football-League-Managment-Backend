@@ -108,4 +108,4 @@ async function getTeamDetails(team_id) {
   exports.getAllteamDetails=getAllteamDetails;
   exports.getTeamsByName = getTeamsByName;
   exports.getTeamsInfo = getTeamsInfo;
-  exports.getAllTeams = getAllTeams;
+  //exports.getAllTeams = getAllTeams;
