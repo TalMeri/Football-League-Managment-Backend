@@ -4,7 +4,9 @@ const DButils = require("./DButils");
 function getDateAndTime(){
     //get today time
     let today = new Date();
-    let time = today.getHours()+':'+today.getMinutes();
+    h = (today.getHours()<10?'0':'') + today.getHours(),
+    m = (today.getMinutes()<10?'0':'') + today.getMinutes();
+    let time = h+':'+m;
     return time;
 }
 

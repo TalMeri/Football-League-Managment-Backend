@@ -77,11 +77,13 @@ router.post("/addGame", async (req, res, next) => {
     if( dateElem[0]>2022)
     throw {status:409, message:"Date is not in the season"}
     let today = new Date();
-    if (dateElem[0]<today.getFullYear() || (dateElem[0]==today.getFullYear() && (dateElem[1]<today.getMonth() || (dateElem[1]==today.getMonth() && dateElem[2]<today.getDay()))))
-      throw {status:409, message:"the date is passed"}
+    const timeElem=String(req.body.game_time).split(':');
+    let time = games_utils.getDateAndTime();
+    time=time.replace(':','');
+    if (parseInt(dateElem[0],10)<today.getFullYear() || (parseInt(dateElem[0],10)==today.getFullYear() && (parseInt(dateElem[1],10)<today.getMonth()+1 || (parseInt(dateElem[1],10)==today.getMonth()+1 && (parseInt(dateElem[2],10)<today.getDate()|| (parseInt(dateElem[2],10)==today.getDate() && parseInt(timeElem[0]+timeElem[1],10)<parseInt(time,10)))))))
+      throw {status:409, message:"The date is passed"}
 
     //check the time
-    const timeElem=String(req.body.game_time).split(':');
     if (timeElem.length!=2 || timeElem[0].length!=2 || timeElem[1].length!=2  || isNaN(timeElem[0]) || isNaN(timeElem[1]) || parseInt(timeElem[0],10)<0 ||parseInt(timeElem[0],10)>24 ||parseInt(timeElem[1],10)<0|| parseInt(timeElem[1],10)>59)
       throw {status:409, message:"wrong format for time"}
     

@@ -29,19 +29,29 @@ async function getLeagueDetails() {
         },
       }
     );
-    return {
-      league_name: league.data.data.name,
-      current_season_name: league.data.data.season.data.name,
-      current_stage_name: stage.data.data.name,
-      next_game:{ //use the first game that come from the search
-        game_date: next_game[0].gamedate,
-        game_time: next_game[0].gametime,
-        hometeam: next_game[0].hometeam,
-        awayteam: next_game[0].awayteam,
-        feild: next_game[0].feild,
-        referee: next_game[0].referee
-      }
-    };
+    if (next_game.length!=0){
+      return {
+        league_name: league.data.data.name,
+        current_season_name: league.data.data.season.data.name,
+        current_stage_name: stage.data.data.name,
+        next_game:{ //use the first game that come from the search
+          game_date: next_game[0].gamedate,
+          game_time: next_game[0].gametime,
+          hometeam: next_game[0].hometeam,
+          awayteam: next_game[0].awayteam,
+          feild: next_game[0].feild,
+          referee: next_game[0].referee
+        }
+      };
+    }
+    else{
+      return {
+        league_name: league.data.data.name,
+        current_season_name: league.data.data.season.data.name,
+        current_stage_name: stage.data.data.name,
+        next_game: null
+      };
+    }
   }
   else{ //if the stage is over
     const stage = await axios.get(   
@@ -52,19 +62,29 @@ async function getLeagueDetails() {
         },
       }
     );
-    return {
-      league_name: league.data.data.name,
-      current_season_name: league.data.data.season.data.name,
-      current_stage_name: stage.data.data[0].name,
-      next_game:{ //use the first game that come from the search
-        game_date: next_game[0].gamedate,
-        game_time: next_game[0].gametime,
-        hometeam: next_game[0].hometeam,
-        awayteam: next_game[0].awayteam,
-        feild: next_game[0].feild,
-        referee: next_game[0].referee
-      }
-    };
+    if (next_game.length!=0){
+      return {
+        league_name: league.data.data.name,
+        current_season_name: league.data.data.season.data.name,
+        current_stage_name: stage.data.data[0].name,
+        next_game:{ //use the first game that come from the search
+          game_date: next_game[0].gamedate,
+          game_time: next_game[0].gametime,
+          hometeam: next_game[0].hometeam,
+          awayteam: next_game[0].awayteam,
+          feild: next_game[0].feild,
+          referee: next_game[0].referee
+        }
+      };
+    }
+    else{
+      return {
+        league_name: league.data.data.name,
+        current_season_name: league.data.data.season.data.name,
+        current_stage_name: stage.data.data[0].name,
+        next_game:null
+      };
+    }
   }
 }
 exports.getLeagueDetails = getLeagueDetails;
