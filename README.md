@@ -16,3 +16,6 @@ Midtjylland 939</br>
 Silkeborg 86</br>
 Randers 2356</br>
 København 85</br>
+
+ID of a player in Team and the position for quick use-</br>
+name-Stephan Maigaard Andersen id-26722 position-Goalkeeper team-København
