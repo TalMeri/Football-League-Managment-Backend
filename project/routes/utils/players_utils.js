@@ -60,16 +60,16 @@ async function getPlayersByTeam(team_id) {
   return playrs_info;
 }
 
-async function getPlayerDetails(player_id) {
+async function getPlayerDetails(playerid) {
   //get from the API the info about this playerID
-  let promise = axios.get(`${api_domain}/players/${player_id}`, {
+  let promise = axios.get(`${api_domain}/players/${playerid}`, {
     params: {
       api_token: process.env.api_token,
       include: "team, position",
       },
     })
     let player_info = await promise;
-    const { fullname, image_path, common_name, nationality, birthdate, birthcountry, height, weight } = player_info.data.data;
+    const { player_id ,fullname, image_path, common_name, nationality, birthdate, birthcountry, height, weight } = player_info.data.data;
     const { name } = player_info.data.data.team.data;
     return {
       id: player_id,
