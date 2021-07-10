@@ -72,16 +72,18 @@ function extractRelevantGamesData(games_info) {
             }
         });
     }
-    games_info=games_info.slice(0,3); //need only 3 games
+    //games_info=games_info.slice(0,3); //need only 3 games
     //return the info of each fav game
     return games_info.map((games_info) => {
-        const { gamedate, gametime, hometeam, awayteam, court } = games_info[0];
+        const { game_id,gamedate, gametime, hometeam, awayteam, feild, referee } = games_info[0];
         return {
+            game_id: game_id,
             game_date: gamedate,
             game_time: gametime,
             hometeam: hometeam,
             awayteam: awayteam,
-            court: court,
+            feild: feild,
+            referee: referee,
           };
       });
     }
@@ -107,13 +109,17 @@ function extractRelevantGamesData(games_info) {
     async function getNewGamesInfo(games_info) {
         //return info about games that didn't happend yet
         return games_info.map((games_info) => {
-            const { gamedate, gametime, hometeam, awayteam, court } = games_info;
+            const { game_id, gamedate, gametime, hometeam, hometeamId, awayteam, awayteamId, feild, referee } = games_info;
             return {
+                game_id: game_id,
                 game_date: gamedate,
                 game_time: gametime,
                 hometeam: hometeam,
+                hometeamId: hometeamId,
                 awayteam: awayteam,
-                court: court,
+                awayteamId: awayteamId,
+                feild: feild,
+                referee: referee
               };
           });
       }
@@ -147,8 +153,8 @@ function extractRelevantGamesData(games_info) {
                 gamemin:games_info[i].gamemin,
                 event:games_info[i].eventdes,
             }]
-            while(j<games_info.length){ //go over the list and check if there are more evnets for this game
-                if (games_info[i].game_id==games_info[j].game_id){
+            while(j<=games_info.length){ //go over the list and check if there are more evnets for this game
+                if (j<games_info.length && games_info[i].game_id==games_info[j].game_id){
                     games_info[i].fullinfo.push({ //if so push them to the array
                         gamemin:games_info[j].gamemin,
                         event:games_info[j].eventdes,
@@ -157,7 +163,7 @@ function extractRelevantGamesData(games_info) {
                 }
                 else{
                     //check if there are no events for this game
-                    if (games_info[i].fullinfo[0].gamemin==null || games_info[i].fullinfo[0].eventdes==null){
+                    if (games_info[i].fullinfo[0].gamemin==null || games_info[i].fullinfo[0].event==null){
                         games_info[i].fullinfo=null;
                     }
                     i=i+1;
@@ -167,13 +173,17 @@ function extractRelevantGamesData(games_info) {
         }
         //return info about games that already happend with the logevent
         return games_info.map((games_info) => {
-            const { gamedate, gametime, hometeam, awayteam, court, score, fullinfo } = games_info;
+            const { game_id, gamedate, gametime, hometeam, hometeamId, awayteam, awayteamId, feild, referee, score, fullinfo } = games_info;
             return {
+                game_id: game_id,
                 game_date: gamedate,
                 game_time: gametime,
                 hometeam: hometeam,
+                hometeamId: hometeamId,
                 awayteam: awayteam,
-                court: court,
+                awayteamId: awayteamId,
+                feild: feild,
+                referee: referee,
                 score: score,
                 logevent: fullinfo
               };

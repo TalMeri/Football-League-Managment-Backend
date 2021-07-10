@@ -35,6 +35,7 @@ async function getLeagueDetails() {
         current_season_name: league.data.data.season.data.name,
         current_stage_name: stage.data.data.name,
         next_game:{ //use the first game that come from the search
+          game_id: next_game[0].game_id,
           game_date: next_game[0].gamedate,
           game_time: next_game[0].gametime,
           hometeam: next_game[0].hometeam,
@@ -68,6 +69,7 @@ async function getLeagueDetails() {
         current_season_name: league.data.data.season.data.name,
         current_stage_name: stage.data.data[0].name,
         next_game:{ //use the first game that come from the search
+          game_id: next_game[0].game_id,
           game_date: next_game[0].gamedate,
           game_time: next_game[0].gametime,
           hometeam: next_game[0].hometeam,

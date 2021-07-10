@@ -106,6 +106,7 @@ router.post("/addGame", async (req, res, next) => {
       throw { status: 409, message: "There is no such team" };
     if (hometeams.data.data.leauge!=null && hometeams.data.data.leauge.data.id!=271)
       throw { status: 409, message: "Team is not in the league" };
+    const hometeamId = hometeams.data.data.id
     const awayteam = req.body.awayteam;
     const awayteams = await axios.get(`${api_domain}/teams/search/${awayteam}`, {
       params: {
@@ -117,6 +118,7 @@ router.post("/addGame", async (req, res, next) => {
       throw { status: 409, message: "There is no such team" };
     if (awayteams.data.data.leauge!=null && awayteams.data.data.leauge.data.id!=271)
       throw { status: 409, message: "Team is not in the league" };
+      const awayteamId = awayteams.data.data.id
 
     // check if valid game
     const allGames = await DButils.execQuery(
@@ -129,7 +131,7 @@ router.post("/addGame", async (req, res, next) => {
       
     // add the new game
     await DButils.execQuery(
-      `INSERT INTO dbo.Games (gamedate, gametime, hometeam, awayteam, feild, referee) VALUES ('${req.body.game_date}','${req.body.game_time}','${req.body.hometeam}','${req.body.awayteam}', '${req.body.feild}','${req.body.referee}')`
+      `INSERT INTO dbo.Games (gamedate, gametime, hometeam, awayteam, feild, referee) VALUES ('${req.body.game_date}','${req.body.game_time}','${req.body.hometeam}',${hometeamId},'${req.body.awayteam}',${awayteamId},'${req.body.feild}','${req.body.referee}')`
     );
     res.status(201).send("Game added");
   } catch (error) {

@@ -418,7 +418,32 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/newGamesPreview"
+              type: object
+              properties:
+                game_date:
+                  type: string
+                  description:  Game date
+                  example: '2021-08-20'
+                game_time:
+                  type: string
+                  description:  Game time
+                  example: '14:00'
+                hometeam:
+                  type: string
+                  description:  Game home team
+                  example: 'Silkeborg'
+                awayteam:
+                  type: string
+                  description:  Game away team
+                  example: 'Randers'
+                feild:
+                  type: string
+                  description:  Game feild
+                  example: 'JYSK park'
+                referee:
+                  type: string
+                  description:  Game referee
+                  example: 'Mike Dean'
       responses:
         "201":
           description: A new game has been added
@@ -506,6 +531,10 @@ components:
     PlayerPreview:
       type: object
       properties:
+        id:
+          type: integer
+          description: player's id
+          example: 1
         name:
           type: string
           description: player's name
@@ -516,9 +545,9 @@ components:
           format: URL
           example: https://cdn.sportmonks.com/images/soccer/players/11/84587.png
         position:
-          type: integer
+          type: string
           description: player's position in team
-          example: 1
+          example:
         team_name:
           type: string
           description: player's team name
@@ -526,6 +555,10 @@ components:
     newGamesPreview:
       type: object
       properties:
+        game_id:
+          type: integer
+          description:  Game id
+          example: 2
         game_date:
           type: string
           description:  Game date
@@ -538,10 +571,18 @@ components:
           type: string
           description:  Game home team
           example: 'Silkeborg'
+        hometeamId:
+          type: integer
+          description:  Game home team Id
+          example: 86
         awayteam:
           type: string
           description:  Game away team
           example: 'Randers'
+        awayteamId:
+          type: integer
+          description:  Game away team Id
+          example: 2394
         feild:
           type: string
           description:  Game feild
@@ -553,6 +594,10 @@ components:
     oldGamesPreview:
       type: object
       properties:
+        game_id:
+          type: integer
+          description:  Game id
+          example: 2
         game_date:
           type: string
           description:  Game date
@@ -565,10 +610,18 @@ components:
           type: string
           description:  Game home team
           example: 'Silkeborg'
+        hometeamId:
+          type: integer
+          description:  Game home team Id
+          example: 86
         awayteam:
           type: string
           description:  Game away team
           example: 'Randers'
+        awayteamId:
+          type: integer
+          description:  Game away team Id
+          example: 2394
         feild:
           type: string
           description:  Game feild
@@ -589,6 +642,10 @@ components:
     Team:
       type: object
       properties:
+        id:
+          type: integer
+          description: team's id
+          example: 1
         name:
           type: string
           description: team name
@@ -623,6 +680,10 @@ components:
     playerPage:
       type: object
       properties:
+        id:
+          type: integer
+          description: player's id
+          example: 1
         name:
           type: string
           description: player's name
@@ -633,9 +694,9 @@ components:
           format: URL
           example: https://cdn.sportmonks.com/images/soccer/players/11/84587.png
         position:
-          type: integer
+          type: string
           description: player's position in team
-          example: 1
+          example: 
         team_name:
           type: string
           description: player's team name
@@ -691,6 +752,10 @@ components:
     TeamPreview:
       type: object
       properties:
+        id:
+          type: integer
+          description: team's id
+          example: 1
         name:
           type: string
           description: team name
@@ -714,4 +779,5 @@ components:
           items:
             type: object
             $ref: "#/components/schemas/PlayerPreview"
+    
         

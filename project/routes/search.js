@@ -13,7 +13,7 @@ router.get("/searchByName/:name", async (req, res, next) => {
         req.params.name
       );
       if (playersAndTeams.length==0){ //error when there are no teams/players that match the search
-        throw {status:409, message:"Result not found"}
+        throw {status:409, message:"No Such Team or Player"}
       }
       else{
         res.send(playersAndTeams);
@@ -34,7 +34,7 @@ router.get("/filterWithPosition/:name/:position", async (req, res, next) => {
       req.params.position
     );
     if (players.length==0){
-      throw {status:409, message:"Result not found"} //error when there are no players that match the search
+      throw {status:409, message:"No Such Team or Player"} //error when there are no players that match the search
     }
     else{
       res.send(players);
@@ -55,7 +55,7 @@ router.get("/filterWithTeamName/:name/:team_name", async (req, res, next) => {
       req.params.team_name
     );
     if (players.length==0){
-      throw {status:409, message:"Result not found"} //error when there are no teams/players that match the search
+      throw {status:409, message:"No Such Team or Player"} //error when there are no teams/players that match the search
     }
     else{
       res.send(players);
@@ -77,7 +77,7 @@ router.get("/filterWithPositionAndTeamName/:name/:position/:team_name", async (r
       req.params.team_name
     );
     if (players.length==0){
-      throw {status:409, message:"Result not found"} //error when there are no teams/players that match the search
+      throw {status:409, message:"No Such Team or Player"} //error when there are no teams/players that match the search
     }
     else{
       res.send(players);

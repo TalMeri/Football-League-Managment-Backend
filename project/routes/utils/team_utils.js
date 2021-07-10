@@ -13,6 +13,7 @@ async function getTeamDetails(team_id) {
     let team_info = await promise;
     const { name, twitter, founded, logo_path } = team_info.data.data;
     return {
+      id: team_id,
       name: name,
       twitter: twitter,
       founded: founded,
@@ -59,8 +60,9 @@ async function getTeamDetails(team_id) {
       }
     });
     return team_match_league.map((team) => {
-      const { name, logo_path } = team;
+      const { id, name, logo_path } = team;
     return {
+      id: id,
       name: name,
       logo_path: logo_path,
       };
@@ -83,8 +85,9 @@ async function getTeamDetails(team_id) {
       throw { status: 409, message: "No favorite Teams" };
     //return the info of each fav team
     return teams_info.map((teams_info) => {
-      const { name, logo_path } = teams_info.data.data;
+      const { id, name, logo_path } = teams_info.data.data;
     return {
+      id: id,
       name: name,
       logo_path: logo_path,
       };

@@ -22,9 +22,9 @@ async function searchByName(name) {
 async function filterWithPosition(name,position) {
   //search players that match the name and the position
   let players= await players_utils.getPlayersByNameAndPosition(name, position);
-  if(players.length==0){ //if there are no players
-    players=null;
-  }
+  // if(players.length==0){ //if there are no players
+  //   players=null;
+  // }
     return players
   }
 

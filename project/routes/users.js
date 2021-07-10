@@ -33,7 +33,7 @@ router.post("/favoritePlayers", async (req, res, next) => {
     const player_id = req.body.playerId;
     //get list of the user favorite players
     const players = await DButils.execQuery(
-      `SELECT player_id FROM dbo.FavoritePlayers WHERE user_id='${user_id}`
+      `SELECT player_id FROM dbo.FavoritePlayers WHERE user_id='${user_id}'`
     );
     if (players.find((x) => x.player_id=== player_id )) //check if the player is already marked as favorite
       throw { status: 409, message: "Player already favorite" };
