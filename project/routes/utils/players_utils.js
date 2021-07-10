@@ -70,13 +70,14 @@ async function getPlayerDetails(playerid) {
       },
     })
     let player_info = await promise;
-    const { player_id ,fullname, image_path, common_name, nationality, birthdate, birthcountry, height, weight } = player_info.data.data;
+    const { player_id ,fullname, image_path, common_name, nationality, birthdate, birthcountry, height, weight, position_id } = player_info.data.data;
     const { name } = player_info.data.data.team.data;
     return {
       id: player_id,
       name: fullname,
       image: image_path,
-      position: player_info.data.data.position.data.name,
+      positionName: player_info.data.data.position.data.name,
+      positionId: position_id,
       team_name: name,
       common_name: common_name,
       nationality: nationality,
