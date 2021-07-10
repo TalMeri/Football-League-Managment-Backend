@@ -11,9 +11,9 @@ async function getTeamDetails(team_id) {
       },
     });
     let team_info = await promise;
-    const { name, twitter, founded, logo_path } = team_info.data.data;
+    const {id, name, twitter, founded, logo_path } = team_info.data.data;
     return {
-      id: team_id,
+      id: id,
       name: name,
       twitter: twitter,
       founded: founded,
