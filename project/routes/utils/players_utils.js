@@ -185,7 +185,7 @@ async function getPlayersByNameAndPositionAndTeamName(name, position,team_name){
   let players = []; //will conatin only players that match the position and the team name
   players_match_name.map((player) =>{
     //check that the team name and position match
-    if (player.team!=null && player.position!=null && player.position.name.toLowerCase()==position.toLowerCase() && player.team.data.name.toLowerCase()==team_name.toLowerCase()){
+    if (player.team!=null && player.position!=null && player.position.data.name.toLowerCase()==position.toLowerCase() && player.team.data.name.toLowerCase()==team_name.toLowerCase()){
       players.push(player);
     }
   });

@@ -31,18 +31,18 @@ async function filterWithPosition(name,position) {
 async function filterWithTeamName(name,team_name) {
   //search players and teams that match the name and the team name
   let players= await players_utils.getPlayersByNameAndTeamName(name, team_name);
-  if(players.length==0){ //if there are no players
-    players=null;
-  }
+ //if(players.length==0){ //if there are no players
+   // players=null;
+  //}
     return players
   }
 
   async function filterWithPositionAndTeamName(name,position,team_name) {
     //search players and teams that match the name , the position and the team name
-    let players= await players_utils.getPlayersByNameAndPosition(name, position,team_name);
-    if(players.length==0){ //if there are no players
-      players=null;
-    }
+    let players= await players_utils.getPlayersByNameAndPositionAndTeamName(name, position,team_name);
+    //if(players.length==0){ //if there are no players
+      //players=null;
+    //}
       return players
     }
 
