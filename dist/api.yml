@@ -544,10 +544,14 @@ components:
           description: player's image
           format: URL
           example: https://cdn.sportmonks.com/images/soccer/players/11/84587.png
-        position:
+        positionName:
           type: string
           description: player's position in team
-          example:
+          example: GoalKeeper
+        positionId:
+          type: integer
+          description: player's position in team
+          example: 2
         team_name:
           type: string
           description: player's team name
@@ -693,10 +697,14 @@ components:
           description: player's image
           format: URL
           example: https://cdn.sportmonks.com/images/soccer/players/11/84587.png
-        position:
+        positionName:
           type: string
           description: player's position in team
-          example: 
+          example: GoalKeeper
+        positionId:
+          type: integer
+          description: player's position in team
+          example: 3
         team_name:
           type: string
           description: player's team name

@@ -39,7 +39,7 @@ async function getPlayersInfo(players_ids_list) {
 function extractRelevantPlayerData(players_info) {
   //return the info of each fav player
   return players_info.map((player_info) => {
-    const { player_id, fullname, image_path} = player_info.data.data;
+    const { player_id, fullname, image_path, position_id} = player_info.data.data;
     const { name } = player_info.data.data.team.data;
     let position = null;
     if (player_info.data.data.position!=null)
@@ -48,7 +48,8 @@ function extractRelevantPlayerData(players_info) {
       id: player_id,
       name: fullname,
       image: image_path,
-      position: position,
+      positionName: position,
+      positionId: position_id,
       team_name: name,
     };
   });
@@ -107,7 +108,7 @@ async function getPlayersByName(name){
   //get details about the players that match the name
   const players_match_name = await getPlayersDetailsByName(name);
   return players_match_name.map((player) => {
-    const { player_id, fullname, image_path } = player;
+    const { player_id, fullname, image_path, position_id } = player;
     let name = null; //if there is no team for the player
     if (player.team != null){
       name = player.team.data.name;
@@ -116,7 +117,8 @@ async function getPlayersByName(name){
       id: player_id,
       name: fullname,
       image: image_path,
-      position: player.position.data.name,
+      positionName: player.position.data.name,
+      positionId: position_id,
       team_name: name,
     };
   });
@@ -133,7 +135,7 @@ async function getPlayersByNameAndPosition(name, position){
     }
   });
   return players.map((player) => {
-    const { player_id, fullname, image_path } = player;
+    const { player_id, fullname, image_path, position_id } = player;
     let name = null;
     if (player.team != null){
       name = player.team.data.name;
@@ -142,7 +144,8 @@ async function getPlayersByNameAndPosition(name, position){
       id: player_id, 
       name: fullname,
       image: image_path,
-      position: player.position.data.name,
+      positionName: player.position.data.name,
+      positionId: position_id, 
       team_name: name,
     };
   });
@@ -159,7 +162,7 @@ async function getPlayersByNameAndTeamName(name, team_name){
     }
   });
   return players.map((player) => {
-    const { player_id, fullname, image_path} = player;
+    const { player_id, fullname, image_path, position_id} = player;
     let name = null;
     if (player.team != null){
       name = player.team.data.name;
@@ -168,7 +171,8 @@ async function getPlayersByNameAndTeamName(name, team_name){
       id: player_id,
       name: fullname,
       image: image_path,
-      position: player.position.data.name,
+      positionName: player.position.data.name,
+      positionId: position_id,
       team_name: name,
     };
   });
@@ -194,7 +198,8 @@ async function getPlayersByNameAndPositionAndTeamName(name, position,team_name){
       id: player_id,
       name: fullname,
       image: image_path,
-      position: player.position.data.name,
+      positionName: player.position.data.name,
+      positionId: position_id,
       team_name: name,
     };
   });
