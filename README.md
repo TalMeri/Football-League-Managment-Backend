@@ -1,4 +1,4 @@
-## Assignment3 - Football League Managment - Backend
+# Assignment3 - Football League Managment - Backend
 FullStack web application - Backend. </br>
 Implement the backend part of the system using Node.js and Azure as DB.
 
